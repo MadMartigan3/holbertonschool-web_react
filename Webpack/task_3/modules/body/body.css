@@ -1,0 +1,16 @@
+button {
+  display: inline;
+  margin: 10px 0;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+#count {
+  display: inline;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+p {
+  font-family: Arial, sans-serif;
+}
