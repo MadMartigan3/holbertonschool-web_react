@@ -1,19 +1,19 @@
 .notification-items {
   position: fixed;
-  top: 10px;
-  right: 10px;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 100;
   background-color: #fff;
-  border: 2px dashed #e1003c;
-  padding: 15px 40px 15px 20px;
-  font-size: 0.95rem;
+  border: 1px dashed #e1003c;
+  padding: 10px 30px 10px 15px;
+  font-size: 13px;
   color: #333;
-  min-width: 300px;
 }
 
 .notification-items p {
-  margin: 0 0 8px 0;
-  font-weight: 500;
+  margin: 0 0 5px 0;
+  font-size: 13px;
 }
 
 .notification-items ul {
@@ -23,7 +23,8 @@
 }
 
 .notification-items ul li {
-  margin-bottom: 4px;
+  margin-bottom: 2px;
+  font-size: 13px;
 }
 
 .notification-items ul li[data-priority="default"] {
