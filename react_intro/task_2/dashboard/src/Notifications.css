@@ -1,0 +1,16 @@
+.notification-items {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  z-index: 100;
+  background-color: #fff;
+  border: 2px dashed #e1003c;
+  padding: 15px 20px;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.notification-items p {
+  margin: 0;
+  font-weight: 500;
+}
