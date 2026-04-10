@@ -32,4 +32,10 @@ describe('App', () => {
     expect(alertMock).toHaveBeenCalledWith('Logging you out');
     alertMock.mockRestore();
   });
+
+  it('displays the "News from the School" section with the correct paragraph by default', () => {
+    render(<App />);
+    expect(screen.getByText(/news from the school/i)).toBeInTheDocument();
+    expect(screen.getByText(/holberton school news goes here/i)).toBeInTheDocument();
+  });
 });
