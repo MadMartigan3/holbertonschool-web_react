@@ -7,14 +7,16 @@ describe('Header', () => {
   });
 
   it('contains the Holberton logo image', () => {
-    render(<Header />);
-    const logo = screen.getByAltText(/holberton logo/i);
-    expect(logo).toBeInTheDocument();
+    const { container } = render(<Header />);
+    const img = container.querySelector('img');
+    expect(img).toBeInTheDocument();
+    expect(img.src).toContain('holberton-logo.jpg');
   });
 
   it('contains an h1 heading with the text "School dashboard"', () => {
     render(<Header />);
     const heading = screen.getByRole('heading', { level: 1 });
+    expect(heading).toBeInTheDocument();
     expect(heading).toHaveTextContent('School dashboard');
   });
 });
