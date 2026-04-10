@@ -84,3 +84,32 @@ describe('markAsRead', () => {
     consoleSpy.mockRestore();
   });
 });
+
+describe('shouldComponentUpdate', () => {
+  test('does not re-render when the length of notifications prop stays the same', () => {
+    const renderSpy = jest.spyOn(Notifications.prototype, 'render');
+    const sameNotifications = [
+      { id: 1, type: 'default', value: 'New course available' },
+      { id: 2, type: 'urgent', value: 'New resume available' },
+      { id: 3, type: 'urgent', html: { __html: '<strong>Urgent requirement</strong> - complete by EOD' } },
+    ];
+    const { rerender } = render(<Notifications notifications={sameNotifications} displayDrawer={true} />);
+    const renderCountAfterMount = renderSpy.mock.calls.length;
+    rerender(<Notifications notifications={sameNotifications} displayDrawer={true} />);
+    expect(renderSpy.mock.calls.length).toBe(renderCountAfterMount);
+    renderSpy.mockRestore();
+  });
+
+  test('re-renders when the length of notifications prop changes', () => {
+    const renderSpy = jest.spyOn(Notifications.prototype, 'render');
+    const { rerender } = render(<Notifications notifications={notifications} displayDrawer={true} />);
+    const renderCountAfterMount = renderSpy.mock.calls.length;
+    const moreNotifications = [
+      ...notifications,
+      { id: 4, type: 'default', value: 'Another notification' },
+    ];
+    rerender(<Notifications notifications={moreNotifications} displayDrawer={true} />);
+    expect(renderSpy.mock.calls.length).toBe(renderCountAfterMount + 1);
+    renderSpy.mockRestore();
+  });
+});
