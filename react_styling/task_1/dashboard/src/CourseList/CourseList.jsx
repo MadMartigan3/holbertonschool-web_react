@@ -1,10 +1,12 @@
 import CourseListRow from './CourseListRow';
 import WithLogging from '../HOC/WithLogging';
 
+const containerStyle = { width: '80%', margin: '40px auto' };
+
 function CourseList({ courses = [] }) {
   if (courses.length === 0) {
     return (
-      <div className="w-4/5 mx-auto my-10">
+      <div style={containerStyle}>
         <table id="CourseList" className="w-full border-collapse">
           <tbody>
             <CourseListRow isHeader={true} textFirstCell="No course available yet" />
@@ -15,7 +17,7 @@ function CourseList({ courses = [] }) {
   }
 
   return (
-    <div className="w-4/5 mx-auto my-10">
+    <div style={containerStyle}>
       <table id="CourseList" className="w-full border-collapse">
         <thead>
           <CourseListRow isHeader={true} textFirstCell="Available courses" />
