@@ -42,7 +42,7 @@ class App extends Component {
   }
 
   render() {
-    const { isLoggedIn = false } = this.props;
+    const { isLoggedIn = true } = this.props;
     return (
       <Fragment>
         <div className="root-notifications">
