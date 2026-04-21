@@ -2,19 +2,25 @@ import { render, screen } from '@testing-library/react';
 import BodySection from './BodySection';
 
 describe('BodySection', () => {
-  it('renders a heading with the title prop value', () => {
-    render(<BodySection title="test title"><p>child</p></BodySection>);
-    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('test title');
-  });
-
-  it('renders children passed to it', () => {
+  test('renders a heading with the title prop', () => {
     render(
-      <BodySection title="test">
-        <p>first child</p>
-        <p>second child</p>
+      <BodySection title="test-title">
+        <p>child</p>
       </BodySection>
     );
-    expect(screen.getByText('first child')).toBeInTheDocument();
-    expect(screen.getByText('second child')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: 'test-title' })).toBeInTheDocument();
+  });
+
+  test('renders any number of children passed to it', () => {
+    render(
+      <BodySection title="title">
+        <p>child 1</p>
+        <p>child 2</p>
+        <span>child 3</span>
+      </BodySection>
+    );
+    expect(screen.getByText('child 1')).toBeInTheDocument();
+    expect(screen.getByText('child 2')).toBeInTheDocument();
+    expect(screen.getByText('child 3')).toBeInTheDocument();
   });
 });

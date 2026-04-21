@@ -1,3 +1,4 @@
+// src/CourseList/CourseList.spec.js
 import { render, screen } from '@testing-library/react';
 import CourseList from './CourseList';
 
@@ -8,13 +9,16 @@ const courses = [
 ];
 
 describe('CourseList', () => {
-  it('renders 5 rows when given an array of courses', () => {
+  test('renders 5 rows total when it receives a courses array (2 headers + 3 body)', () => {
     render(<CourseList courses={courses} />);
-    expect(screen.getAllByRole('row')).toHaveLength(5);
+    const rows = screen.getAllByRole('row');
+    expect(rows).toHaveLength(5);
   });
 
-  it('renders 1 row when given an empty array', () => {
-    render(<CourseList />);
-    expect(screen.getAllByRole('row')).toHaveLength(1);
+  test('renders 1 row in tbody when it receives an empty array', () => {
+    const { container } = render(<CourseList courses={[]} />);
+    const tbody = container.querySelector('tbody');
+    expect(tbody.querySelectorAll('tr')).toHaveLength(1);
+    expect(tbody).toHaveTextContent(/no course available yet/i);
   });
 });

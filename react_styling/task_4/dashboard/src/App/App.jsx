@@ -1,64 +1,91 @@
-import { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import Notifications from '../Notifications/Notifications';
 import Header from '../Header/Header';
-import Login from '../Login/Login';
 import Footer from '../Footer/Footer';
+import Login from '../Login/Login';
 import CourseList from '../CourseList/CourseList';
-import BodySection from '../BodySection/BodySection';
-import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
 import { getLatestNotification } from '../utils/utils';
 
-const notificationsList = [
+import BodySection from '../BodySection/BodySection';
+import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
+
+const defaultNotifications = [
   { id: 1, type: 'default', value: 'New course available' },
   { id: 2, type: 'urgent', value: 'New resume available' },
   { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
 ];
 
-const coursesList = [
+const defaultCourses = [
   { id: 1, name: 'ES6', credit: 60 },
   { id: 2, name: 'Webpack', credit: 20 },
   { id: 3, name: 'React', credit: 40 },
 ];
 
 class App extends Component {
+  static propTypes = {
+    isLoggedIn: PropTypes.bool,
+    courses: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        credit: PropTypes.number.isRequired,
+      })
+    ),
+    logOut: PropTypes.func,
+  };
+
   static defaultProps = {
+    isLoggedIn: false,
+    courses: defaultCourses,
     logOut: () => {},
   };
 
   handleKeyDown = (e) => {
-    if (e.ctrlKey && e.key === 'h') {
-      alert('Logging you out');
+    const key = e && typeof e.key === 'string' ? e.key : '';
+    if (e?.ctrlKey && (key === 'h' || key === 'H')) {
+      window.alert('Logging you out');
       this.props.logOut();
     }
   };
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
+    document.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('keydown', this.handleKeyDown);
   }
 
   render() {
-    const { isLoggedIn = true } = this.props;
+    const { isLoggedIn, courses } = this.props;
+
     return (
-      <Fragment>
-        <div className="root-notifications">
-          <Notifications notifications={notificationsList} displayDrawer={false} />
+            <>
+        <Notifications displayDrawer={true} notifications={defaultNotifications} />
+        <div className="App">
+          <Header />
+
+          <main className="App-body">
+            {!isLoggedIn ? (
+              <BodySectionWithMarginBottom title="Log in to continue">
+                <Login />
+              </BodySectionWithMarginBottom>
+            ) : (
+              <BodySectionWithMarginBottom title="Course list">
+                <CourseList courses={courses} />
+              </BodySectionWithMarginBottom>
+            )}
+
+            <BodySection title="News from the School">
+              <p>ipsum Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique, asperiores architecto blanditiis fuga doloribus sit illum aliquid ea distinctio minus accusantium, impedit quo voluptatibus ut magni dicta. Recusandae, quia dicta?</p>
+            </BodySection>
+          </main>
+
+          <Footer />
         </div>
-        <Header />
-        <main className="flex-1 flex flex-col">
-          {isLoggedIn
-            ? <BodySectionWithMarginBottom title="Course list"><CourseList courses={coursesList} /></BodySectionWithMarginBottom>
-            : <BodySectionWithMarginBottom title="Log in to continue"><Login /></BodySectionWithMarginBottom>
-          }
-          <BodySection title="News from the School">
-            <p>Holberton School News goes here</p>
-          </BodySection>
-        </main>
-        <Footer />
-      </Fragment>
+      </>
     );
   }
 }

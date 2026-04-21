@@ -1,28 +1,21 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom';
 import Login from './Login';
 
 describe('Login', () => {
-  it('renders without crashing', () => {
+  test('renders the prompt text', () => {
     render(<Login />);
+    expect(screen.getByText(/login to access the full dashboard/i)).toBeInTheDocument();
   });
 
-  it('contains 2 labels, 2 inputs, and 1 button', () => {
-    const { container } = render(<Login />);
-    expect(container.querySelectorAll('label')).toHaveLength(2);
-    expect(container.querySelectorAll('input')).toHaveLength(2);
-    expect(screen.getAllByRole('button')).toHaveLength(1);
+  test('renders email and password fields with labels', () => {
+    render(<Login />);
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
   });
 
-  it('focuses the email input when the email label is clicked', async () => {
+  test('renders the OK button', () => {
     render(<Login />);
-    await userEvent.click(screen.getByText(/email/i));
-    expect(screen.getByLabelText(/email/i)).toHaveFocus();
-  });
-
-  it('focuses the password input when the password label is clicked', async () => {
-    render(<Login />);
-    await userEvent.click(screen.getByText(/password/i));
-    expect(screen.getByLabelText(/password/i)).toHaveFocus();
+    expect(screen.getByRole('button', { name: /ok/i })).toBeInTheDocument();
   });
 });

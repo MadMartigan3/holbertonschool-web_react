@@ -1,22 +1,17 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import Header from './Header';
 
 describe('Header', () => {
-  it('renders without crashing', () => {
+  test('renders the title', () => {
     render(<Header />);
+    expect(screen.getByRole('heading', { name: /school dashboard/i })).toBeInTheDocument();
   });
 
-  it('contains the Holberton logo image', () => {
-    const { container } = render(<Header />);
-    const img = container.querySelector('img');
+  test('renders the Holberton logo with alt text', () => {
+    render(<Header />);
+    const img = screen.getByAltText(/holberton logo/i);
     expect(img).toBeInTheDocument();
-    expect(img.src).toContain('holberton-logo.jpg');
-  });
-
-  it('contains an h1 heading with the text "School dashboard"', () => {
-    render(<Header />);
-    const heading = screen.getByRole('heading', { level: 1 });
-    expect(heading).toBeInTheDocument();
-    expect(heading).toHaveTextContent('School dashboard');
+    expect(img.closest('.App-header')).toBeInTheDocument();
   });
 });

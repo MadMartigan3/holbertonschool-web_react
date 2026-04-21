@@ -1,66 +1,118 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import closeIcon from '../assets/close-button.png';
 import NotificationItem from './NotificationItem';
 
-class Notifications extends Component {
+export default class Notifications extends Component {
+  static propTypes = {
+    notifications: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+        type: PropTypes.string,
+        value: PropTypes.string,
+        html: PropTypes.shape({ __html: PropTypes.string }),
+      })
+    ),
+    displayDrawer: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    notifications: [],
+    displayDrawer: false,
+  };
+
   shouldComponentUpdate(nextProps) {
     return nextProps.notifications.length !== this.props.notifications.length;
   }
 
-  markAsRead(id) {
+  markAsRead = (id) => {
     console.log(`Notification ${id} has been marked as read`);
-  }
+  };
 
   render() {
-    const { notifications = [], displayDrawer = false } = this.props;
+    const { notifications, displayDrawer } = this.props;
 
     return (
-      <div className="Notifications fixed top-0 right-0 z-[100] wide:text-right" style={{ padding: '5px 10px' }}>
-        <div className="notification-title text-sm text-[#333] cursor-pointer py-1">Your notifications</div>
+      <div
+        className={[
+          'fixed top-4 right-4 z-50 text-right',
+          'max-[912px]:inset-0 max-[912px]:w-screen max-[912px]:h-screen max-[912px]:text-left',
+        ].join(' ')}
+      >
+        {/* Title */}
+        <div
+          className="text-right max-[912px]:text-left font-normal text-base text-black px-1"
+          data-testid="notifications-title"
+        >
+          Your notifications
+        </div>
+
         {displayDrawer && (
           <div
-            className="notification-items fixed inset-0 z-50 wide:relative wide:inset-auto wide:z-auto bg-white border border-dashed border-[var(--main-color)] p-3 wide:p-1.5 text-left text-[13px] text-[#333] wide:w-1/4 wide:min-w-[280px]"
+            className={[
+              'relative mt-1 inline-block p-2 border border-dotted rounded-none bg-white',
+              'max-[912px]:mt-0 max-[912px]:block max-[912px]:w-full max-[912px]:h-[calc(100vh-2.5rem)]',
+              'max-[912px]:p-4 max-[912px]:border-0 max-[912px]:rounded-none max-[912px]:overflow-y-auto',
+              'max-[912px]:shadow-none',
+            ].join(' ')}
+            style={{ borderColor: 'var(--main-color)' }}
           >
-            <p className="mb-[5px]">Here is the list of notifications</p>
-            <button
-              aria-label="Close"
-              style={{
-                position: 'absolute',
-                top: '5px',
-                right: '8px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '14px',
-                color: '#333',
-                padding: '0',
-                lineHeight: '1',
-              }}
-              onClick={() => console.log('Close button has been clicked')}
-            >
-              <img src={closeIcon} alt="close icon" style={{ width: '10px', height: '10px' }} />
-            </button>
             {notifications.length === 0 ? (
-              <p>No new notification for now</p>
+              <p className="notifications-empty m-0">No new notification for now</p>
             ) : (
-              <ul className="list-none wide:list-disc m-0 p-0 wide:pl-5">
-                {notifications.map((notification) => (
-                  <NotificationItem
-                    key={notification.id}
-                    id={notification.id}
-                    type={notification.type}
-                    html={notification.html}
-                    value={notification.value}
-                    markAsRead={this.markAsRead}
+              <>
+                <p className="text-base mb-2 m-0">Here is the list of notifications</p>
+
+                <button
+                  aria-label="Close"
+                  className={[
+                    'absolute top-2 right-2',
+                    'max-[912px]:top-4 max-[912px]:right-4',
+                  ].join(' ')}
+                  onClick={() => console.log('Close button has been clicked')}
+                >
+                  <img
+                    src={closeIcon}
+                    alt="Close"
+                    className="w-3 h-3 max-[912px]:w-4 max-[912px]:h-4"
                   />
-                ))}
-              </ul>
+                </button>
+
+                <ul
+                  className={[
+                    'notifications-list list-disc pl-5',
+                    'max-[912px]:list-none max-[912px]:pl-0',
+                    'max-[912px]:-mx-1',
+                  ].join(' ')}
+                >
+                  {notifications.map((n) => (
+                    <NotificationItem
+                      key={n.id}
+                      id={n.id}
+                      type={n.type}
+                      value={n.value}
+                      html={n.html}
+                      markAsRead={this.markAsRead}
+                    />
+                  ))}
+                </ul>
+              </>
             )}
           </div>
         )}
+
+        <style>{`
+          @media (max-width: 912px) {
+            .notifications-list > li {
+              padding: 12px 14px;
+              border-bottom: 1px solid #e5e7eb; /* Tailwind gray-200 */
+            }
+            .notifications-list > li:last-child {
+              border-bottom: none;
+            }
+          }
+        `}</style>
       </div>
     );
   }
 }
-
-export default Notifications;

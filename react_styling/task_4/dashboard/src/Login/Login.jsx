@@ -2,30 +2,21 @@ import WithLogging from '../HOC/WithLogging';
 
 function Login() {
   return (
-    <div className="App-body p-10 flex-1 flex flex-col gap-4 border-t-4 border-[var(--main-color)]">
-      <p className="text-lg italic">Login to access the full dashboard</p>
-      <form className="flex flex-col wide:flex-row wide:items-center gap-2.5">
-        <label className="font-bold" htmlFor="email">Email: </label>
-        <input
-          className="px-2.5 py-1.5 border border-[#ccc] rounded text-base w-full wide:w-auto"
-          type="email"
-          id="email"
-          name="email"
-        />
-        <label className="font-bold" htmlFor="password">Password: </label>
-        <input
-          className="px-2.5 py-1.5 border border-[#ccc] rounded text-base w-full wide:w-auto"
-          type="password"
-          id="password"
-          name="password"
-        />
-        <button
-          className="px-4 py-1.5 bg-[var(--main-color)] text-white border-none rounded cursor-pointer text-base self-start wide:self-auto"
-          type="submit"
-        >OK</button>
-      </form>
+    <div className="App-body p-[10px]">
+      <div className="border-t-[3px] border-[var(--main-color)] pt-2">
+        <p className="text-sm mb-2">Login to access the full dashboard</p>
+
+        <form className="App-login inline-flex items-center gap-2 flex-wrap">
+          <label htmlFor="email" className="ml-4 mr-2">Email</label>
+          <input id="email" type="email" className="border border-gray-300 px-2 py-1 mr-2 rounded" />
+
+          <label htmlFor="password" className="ml-4 mr-2">Password</label>
+          <input id="password" type="password" className="border border-gray-300 px-2 py-1 mr-2 rounded" />
+
+          <button className="px-3 py-1 border rounded text-xs">OK</button>
+        </form>
+      </div>
     </div>
   );
 }
-
 export default WithLogging(Login);

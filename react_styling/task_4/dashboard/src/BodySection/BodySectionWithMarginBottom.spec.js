@@ -1,19 +1,25 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import BodySectionWithMarginBottom from './BodySectionWithMarginBottom';
-import BodySection from './BodySection';
 
 describe('BodySectionWithMarginBottom', () => {
-  it('contains a div with the class bodySectionWithMargin', () => {
+  test('contains a div with the class bodySectionWithMargin', () => {
     const { container } = render(
-      <BodySectionWithMarginBottom title="test"><p>child</p></BodySectionWithMarginBottom>
+      <BodySectionWithMarginBottom title="title">
+        <p>child</p>
+      </BodySectionWithMarginBottom>
     );
-    expect(container.querySelector('.bodySectionWithMargin')).toBeInTheDocument();
+    const wrapper = container.querySelector('.bodySectionWithMargin');
+    expect(wrapper).not.toBeNull();
   });
 
-  it('renders the BodySection component', () => {
+  test('renders the BodySection component', () => {
     const { container } = render(
-      <BodySectionWithMarginBottom title="test"><p>child</p></BodySectionWithMarginBottom>
+      <BodySectionWithMarginBottom title="title">
+        <p>child</p>
+      </BodySectionWithMarginBottom>
     );
-    expect(container.querySelector('.bodySection')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: 'title' })).toBeInTheDocument();
+    const wrapper = container.querySelector('.bodySectionWithMargin');
+    expect(wrapper.querySelector('.bodySection')).not.toBeNull();
   });
 });
