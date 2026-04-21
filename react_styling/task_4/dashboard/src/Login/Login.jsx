@@ -2,7 +2,7 @@ import WithLogging from '../HOC/WithLogging';
 
 function Login() {
   return (
-    <div className="App-body mt-20 p-10 flex-1 flex flex-col gap-4 border-t-4 border-[var(--main-color)]">
+    <div className="App-body p-10 flex-1 flex flex-col gap-4 border-t-4 border-[var(--main-color)]">
       <p className="text-lg italic">Login to access the full dashboard</p>
       <form className="flex flex-col wide:flex-row wide:items-center gap-2.5">
         <label className="font-bold" htmlFor="email">Email: </label>

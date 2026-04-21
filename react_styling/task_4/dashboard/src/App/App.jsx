@@ -48,7 +48,7 @@ class App extends Component {
           <Notifications notifications={notificationsList} displayDrawer={false} />
         </div>
         <Header />
-        <main className="flex-1 flex flex-col px-4 wide:px-0">
+        <main className="flex-1 flex flex-col">
           {isLoggedIn
             ? <BodySectionWithMarginBottom title="Course list"><CourseList courses={coursesList} /></BodySectionWithMarginBottom>
             : <BodySectionWithMarginBottom title="Log in to continue"><Login /></BodySectionWithMarginBottom>
