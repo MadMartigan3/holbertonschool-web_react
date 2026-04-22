@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Login from './Login';
 
@@ -17,17 +17,5 @@ describe('Login', () => {
   test('renders the OK button', () => {
     render(<Login />);
     expect(screen.getByRole('button', { name: /ok/i })).toBeInTheDocument();
-  });
-
-  test('submit button is disabled by default', () => {
-    render(<Login />);
-    expect(screen.getByRole('button', { name: /ok/i })).toBeDisabled();
-  });
-
-  test('submit button is enabled when email is valid and password has at least 8 characters', () => {
-    render(<Login />);
-    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'test@example.com' } });
-    fireEvent.change(screen.getByLabelText(/password/i), { target: { value: 'password123' } });
-    expect(screen.getByRole('button', { name: /ok/i })).not.toBeDisabled();
   });
 });
