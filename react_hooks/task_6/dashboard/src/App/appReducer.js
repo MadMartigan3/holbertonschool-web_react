@@ -14,17 +14,19 @@ export const initialState = {
   courses: [],
 };
 
-export function appReducer(state = initialState, action) {
+export function appReducer(state = initialState, action = {}) {
   switch (action.type) {
-    case APP_ACTIONS.LOGIN:
+    case APP_ACTIONS.LOGIN: {
+      const { email = '', password = '' } = action.payload || {};
       return {
         ...state,
-        user: { email: action.payload.email, password: action.payload.password, isLoggedIn: true },
+        user: { email, password, isLoggedIn: true },
       };
+    }
     case APP_ACTIONS.LOGOUT:
       return {
         ...state,
-        user: { email: '', password: '', isLoggedIn: false },
+        user: initialState.user,
       };
     case APP_ACTIONS.TOGGLE_DRAWER:
       return { ...state, displayDrawer: !state.displayDrawer };
