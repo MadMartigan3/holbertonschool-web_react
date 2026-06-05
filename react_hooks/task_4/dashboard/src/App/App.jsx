@@ -10,28 +10,43 @@ import newContext from '../Context/context';
 import BodySection from '../BodySection/BodySection';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
 
-const notificationsList = [
-  { id: 1, type: 'default', value: 'New course available' },
-  { id: 2, type: 'urgent', value: 'New resume available' },
-  { id: 3, type: 'urgent', html: { __html: getLatestNotification() } },
-];
-
-const coursesList = [
-  { id: 1, name: 'ES6', credit: 60 },
-  { id: 2, name: 'Webpack', credit: 20 },
-  { id: 3, name: 'React', credit: 40 },
-];
-
 function App() {
   const [displayDrawer, setDisplayDrawer] = useState(true);
   const [user, setUser] = useState({ email: '', password: '', isLoggedIn: false });
-  const [notifications, setNotifications] = useState(notificationsList);
+  const [notifications, setNotifications] = useState([]);
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    axios.get('/notifications.json')
-      .then((response) => setNotifications(response.data))
-      .catch(() => {});
+    let isMounted = true;
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get('/notifications.json');
+        if (!isMounted) return;
+        const data = response.data.map((n) =>
+          n.html ? { ...n, html: { __html: getLatestNotification() } } : n
+        );
+        setNotifications(data);
+      } catch (error) {
+        if (isMounted) console.error(error);
+      }
+    };
+    fetchNotifications();
+    return () => { isMounted = false; };
   }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get('/courses.json');
+        if (isMounted) setCourses(response.data);
+      } catch (error) {
+        if (isMounted) console.error(error);
+      }
+    };
+    fetchCourses();
+    return () => { isMounted = false; };
+  }, [user]);
 
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
@@ -75,7 +90,7 @@ function App() {
             </BodySectionWithMarginBottom>
           ) : (
             <BodySectionWithMarginBottom title="Course list">
-              <CourseList courses={coursesList} />
+              <CourseList courses={courses} />
             </BodySectionWithMarginBottom>
           )}
 
