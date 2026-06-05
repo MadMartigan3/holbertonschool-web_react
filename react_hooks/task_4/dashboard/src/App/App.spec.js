@@ -17,7 +17,7 @@ const mockCourses = [
 async function loadNotifications() {
   await act(async () => {
     mockAxios.mockResponseFor('/notifications.json', {
-      data: { notifications: mockNotifications },
+      data: mockNotifications,
     });
   });
 }
@@ -25,7 +25,7 @@ async function loadNotifications() {
 async function loadCourses() {
   await act(async () => {
     mockAxios.mockResponseFor('/courses.json', {
-      data: { courses: mockCourses },
+      data: mockCourses,
     });
   });
 }

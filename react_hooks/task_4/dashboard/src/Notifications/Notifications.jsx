@@ -22,7 +22,8 @@ function Notifications({
       </div>
 
       {displayDrawer && (
-        <div
+        <section
+          aria-label="Notifications"
           className="notification-drawer relative bg-white border border-dashed text-left text-[13px]"
           style={{ borderColor: 'var(--main-color)', padding: '12px' }}
         >
@@ -60,7 +61,7 @@ function Notifications({
               </ul>
             </>
           )}
-        </div>
+        </section>
       )}
     </div>
   );

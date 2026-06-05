@@ -25,8 +25,8 @@ function App() {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get(`${__BASE_URL__}notifications.json`);
-        const data = response.data.notifications.map((n) =>
+        const response = await axios.get('/notifications.json');
+        const data = response.data.map((n) =>
           n.html ? { ...n, html: { __html: getLatestNotification() } } : n
         );
         setNotifications(data);
@@ -42,8 +42,8 @@ function App() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get(`${__BASE_URL__}courses.json`);
-        setCourses(response.data.courses);
+        const response = await axios.get('/courses.json');
+        setCourses(response.data);
       } catch (error) {
         if (process.env.NODE_ENV !== 'production') {
           console.error(error);
