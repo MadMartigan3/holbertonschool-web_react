@@ -17,13 +17,13 @@ const coursesList = [
 
 function App() {
   const [displayDrawer, setDisplayDrawer] = useState(true);
-  const [user, setUser] = useState(newContext._currentValue.user);
+  const [user, setUser] = useState({ email: '', password: '', isLoggedIn: false });
   const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    axios.get('/notifications.json').then((response) => {
-      setNotifications(response.data);
-    });
+    axios.get('/notifications.json')
+      .then((response) => setNotifications(response.data))
+      .catch(() => {});
   }, []);
 
   const handleDisplayDrawer = useCallback(() => {
