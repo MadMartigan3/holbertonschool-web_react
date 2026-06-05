@@ -19,24 +19,26 @@ afterEach(() => {
 });
 
 describe('App - displayDrawer state', () => {
-  test('displayDrawer defaults to true and shows notifications after loading', async () => {
+  test('displayDrawer defaults to true and shows notifications immediately', async () => {
     render(<App />);
-    expect(await screen.findByText('Here is the list of notifications')).toBeInTheDocument();
+    expect(screen.getByText('Here is the list of notifications')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /close/i })).toBeInTheDocument();
+    await act(async () => {});
   });
 
   test('handleHideDrawer hides the drawer', async () => {
     render(<App />);
-    const closeBtn = await screen.findByRole('button', { name: /close/i });
-    fireEvent.click(closeBtn);
+    fireEvent.click(screen.getByRole('button', { name: /close/i }));
     expect(screen.queryByText('Here is the list of notifications')).not.toBeInTheDocument();
+    await act(async () => {});
   });
 
   test('handleDisplayDrawer shows the drawer after it was closed', async () => {
     render(<App />);
-    const closeBtn = await screen.findByRole('button', { name: /close/i });
-    fireEvent.click(closeBtn);
+    fireEvent.click(screen.getByRole('button', { name: /close/i }));
     fireEvent.click(screen.getByText('Your notifications'));
     expect(screen.getByText('Here is the list of notifications')).toBeInTheDocument();
+    await act(async () => {});
   });
 });
 
@@ -86,11 +88,11 @@ describe('App - notifications state', () => {
   test('clicking a notification removes it from the list and logs the expected string', async () => {
     const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
     render(<App />);
-    const item = await screen.findByText('New resume available');
-    fireEvent.click(item);
+    fireEvent.click(screen.getByText('New resume available'));
     expect(screen.queryByText('New resume available')).not.toBeInTheDocument();
     expect(consoleSpy).toHaveBeenCalledWith('Notification 2 has been marked as read');
     consoleSpy.mockRestore();
+    await act(async () => {});
   });
 });
 
