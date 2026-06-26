@@ -6,11 +6,10 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Login from './pages/Login/Login';
 import CourseList from './pages/CourseList/CourseList';
-import { getLatestNotification } from './utils/utils';
 import BodySection from './components/BodySection/BodySection';
 import BodySectionWithMarginBottom from './components/BodySectionWithMarginBottom/BodySectionWithMarginBottom';
 import { login, logout } from './features/auth/authSlice';
-import { setNotifications, markNotificationAsRead, toggleDrawer } from './features/notifications/notificationsSlice';
+import { fetchNotifications, markNotificationAsRead, showDrawer, hideDrawer } from './features/notifications/notificationsSlice';
 import { setCourses } from './features/courses/coursesSlice';
 
 function App() {
@@ -20,21 +19,7 @@ function App() {
   const { courses } = useSelector((state) => state.courses);
 
   useEffect(() => {
-    let isMounted = true;
-    const fetchNotifications = async () => {
-      try {
-        const response = await axios.get('/notifications.json');
-        if (!isMounted) return;
-        const data = response.data.map((n) =>
-          n.html ? { ...n, html: { __html: getLatestNotification() } } : n
-        );
-        dispatch(setNotifications(data));
-      } catch (error) {
-        if (process.env.NODE_ENV !== 'production') console.error(error);
-      }
-    };
-    fetchNotifications();
-    return () => { isMounted = false; };
+    dispatch(fetchNotifications());
   }, [dispatch]);
 
   useEffect(() => {
@@ -52,11 +37,11 @@ function App() {
   }, [dispatch, user.isLoggedIn]);
 
   const handleDisplayDrawer = useCallback(() => {
-    dispatch(toggleDrawer());
+    dispatch(showDrawer());
   }, [dispatch]);
 
   const handleHideDrawer = useCallback(() => {
-    dispatch(toggleDrawer());
+    dispatch(hideDrawer());
   }, [dispatch]);
 
   const logIn = useCallback((email, password) => {
@@ -68,7 +53,6 @@ function App() {
   }, [dispatch]);
 
   const handleMarkNotificationAsRead = useCallback((id) => {
-    console.log(`Notification ${id} has been marked as read`);
     dispatch(markNotificationAsRead(id));
   }, [dispatch]);
 

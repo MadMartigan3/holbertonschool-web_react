@@ -19,7 +19,7 @@ const mockCourses = [
 
 async function loadNotifications() {
   await act(async () => {
-    mockAxios.mockResponseFor('/notifications.json', { data: mockNotifications });
+    mockAxios.mockResponseFor('http://localhost:5173/notifications.json', { data: mockNotifications });
   });
 }
 
@@ -223,7 +223,7 @@ describe('App - data fetching', () => {
     await loadNotifications();
     expect(screen.getByText('New course available')).toBeInTheDocument();
     expect(screen.getByText('New resume available')).toBeInTheDocument();
-    expect(mockAxios.get).toHaveBeenCalledWith('/notifications.json');
+    expect(mockAxios.get).toHaveBeenCalledWith('http://localhost:5173/notifications.json');
   });
 
   test('fetches courses data when the user state changes', async () => {
